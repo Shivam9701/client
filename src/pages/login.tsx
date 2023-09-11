@@ -1,16 +1,13 @@
 import { useLogin } from "@refinedev/core";
 import { useEffect, useRef } from "react";
 
+import { casanova } from "../assets";
+
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { ThemedTitleV2 } from "@refinedev/mui";
 
 import { CredentialResponse } from "../interfaces/google";
-
-// Todo: Update your Google Client ID here
-const GOOGLE_CLIENT_ID =
-  "1041339102270-e1fpe2b6v6u1didfndh7jkjmpcashs4f.apps.googleusercontent.com";
 
 export const Login: React.FC = () => {
   const { mutate: login } = useLogin<CredentialResponse>();
@@ -26,7 +23,7 @@ export const Login: React.FC = () => {
       try {
         window.google.accounts.id.initialize({
           ux_mode: "popup",
-          client_id: GOOGLE_CLIENT_ID,
+          client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
           callback: async (res: CredentialResponse) => {
             if (res.credential) {
               login(res);
@@ -43,11 +40,12 @@ export const Login: React.FC = () => {
       }
     }, []);
 
-    return <div ref={divRef} />;
+    return <div ref={divRef} style={{marginLeft:'60px'}} />;
   };
 
   return (
-    <Container
+    <Box sx={{backgroundColor :'#050a30'}}> 
+      <Container
       style={{
         height: "100vh",
         display: "flex",
@@ -61,14 +59,9 @@ export const Login: React.FC = () => {
         justifyContent="center"
         flexDirection="column"
       >
-        <ThemedTitleV2
-          collapsed={false}
-          wrapperStyles={{
-            fontSize: "22px",
-            justifyContent: "center",
-          }}
-        />
-
+        <div>
+          <img src={casanova} alt="Yariga" width="300px" height="300px"/>
+        </div>
         <GoogleButton />
 
         <Typography align="center" color={"text.secondary"} fontSize="12px">
@@ -82,5 +75,7 @@ export const Login: React.FC = () => {
         </Typography>
       </Box>
     </Container>
+    </Box>
+  
   );
 };
